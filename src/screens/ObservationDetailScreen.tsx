@@ -337,16 +337,16 @@ const ObservationDetailScreen = () => {
 
       {editMode && (
         <View style={styles.addPhotoContainer}>
-          <TextInput
+          {/* <TextInput
             label="Photo Description"
             value={newPhotoDescription}
             onChangeText={setNewPhotoDescription}
             style={styles.input}
-          />
+          /> */}
           <Button
             mode="contained"
             onPress={handleTakePhoto}
-            style={styles.button}
+            style={styles.buttonAddPhoto}
             icon="camera"
           >
             Add New Photo
@@ -524,6 +524,12 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 4,
     marginBottom: 8,
+  },
+  buttonAddPhoto: {
+    flex: 1,
+    marginHorizontal: 4,
+    marginBottom: 8,
+    backgroundColor:'green'
   },
   deleteButton: {
     marginTop: 8,
