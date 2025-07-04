@@ -1,34 +1,72 @@
-# Gradle files
-.gradle/
-build/
+# Node modules
+node_modules/
 
-# Local configuration file (sdk path, etc)
-local.properties
+# Expo related files
+.expo/
+web-build/
 
-# Log/OS Files
+# Android specific files
+android/build/
+android/.gradle/
+android/app/build/
+android/app/.idea/
+android/app/src/debug/
+android/app/src/release/
+android/app/src/androidTest/
+android/app/src/main/assets/
+android/app/src/main/res/
+android/app/src/main/AndroidManifest.xml.bak
+android/app/google-services.json
+
+# iOS specific files
+ios/build/
+ios/Pods/
+ios/.symlinks/
+ios/.idea/
+ios/DerivedData/
+ios/*.xcworkspace
+ios/*.xcodeproj/xcuserdata/
+ios/*.xcodeproj/project.xcworkspace/
+ios/*.xcodeproj/xcshareddata/
+ios/*.xcodeproj/project.pbxproj.orig
+ios/*.xcodeproj/project.pbxproj.backup
+ios/*.xcodeproj/xcuserdata/
+ios/Podfile.lock
+ios/GoogleService-Info.plist
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs and temporary files
 *.log
-
-# Android Studio generated files and folders
-captures/
-.externalNativeBuild/
-.cxx/
-*.aab
-*.apk
-output-metadata.json
-
-# IntelliJ
-*.iml
-.idea/
-misc.xml
-deploymentTargetDropDown.xml
-render.experimental.xml
-
-# Keystore files
 *.jks
+*.p8
 *.keystore
+*.tgz
+*.zip
+*.rar
+*.7z
+*.apk
+*.ipa
 
-# Google Services (e.g. APIs or Firebase)
-google-services.json
+# macOS specific files
+.DS_Store
 
-# Android Profiling
-*.hprof
+# VS Code specific files
+.vscode/
+
+# Jest cache
+/coverage/
+.jest/cache/
+
+# Yarn files
+.yarn/cache/
+.yarn/unplugged/
+.yarn/install-state.gz
+.pnp.*
+
+# Other
+temp/
+tmp/
