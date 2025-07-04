@@ -59,7 +59,7 @@ const AppWrapper = () => {
           <Stack.Screen
             name="ObservationsList"
             component={ObservationsListScreen}
-            options={{ title: "My Observations" }}
+            options={{ title: "Observations List" }}
           />
           <Stack.Screen
             name="ObservationForm"
