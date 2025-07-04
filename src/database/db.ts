@@ -89,41 +89,6 @@ export const getDatabase = async (): Promise<SQLiteDatabase> => {
 
   return databaseInstance;
 };
-// const databaseName = "coral_monitoring.db";
-
-// export const getDatabase = async (): Promise<SQLiteDatabase> => {
-//   // Check if database directory exists
-//   const directory = `${FileSystem.documentDirectory}SQLite`;
-//   const dirInfo = await FileSystem.getInfoAsync(directory);
-
-//   if (!dirInfo.exists) {
-//     await FileSystem.makeDirectoryAsync(directory, { intermediates: true });
-//   }
-
-//   // Check if database file exists
-//   const dbPath = `${directory}/${databaseName}`;
-//   const fileInfo = await FileSystem.getInfoAsync(dbPath);
-
-//   if (!fileInfo.exists) {
-//     await FileSystem.writeAsStringAsync(dbPath, "", {
-//       encoding: FileSystem.EncodingType.UTF8,
-//     });
-//   }
-
-//   // Open database with error handling
-//   try {
-//     const db = await openDatabaseAsync(databaseName);
-//     await initDatabase(db);
-//     return db;
-//   } catch (error) {
-//     // if (db) {
-//     //   await db.closeAsync();
-//     //   db = null;
-//     // }
-//     console.error("Failed to open database:", error);
-//     throw new Error("Failed to initialize database");
-//   }
-// };
 
 export const initDatabase = async (database: SQLiteDatabase): Promise<void> => {
   await database.execAsync(`

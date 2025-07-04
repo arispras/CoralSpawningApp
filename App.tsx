@@ -14,12 +14,7 @@ const AppWrapper = () => {
   const Stack = createStackNavigator();
 
   const App: React.FC = () => {
-    //   useEffect(() => {
-    //     // Initialize database when app starts
-    //     const db = getDatabase().then((db) => {
-    //       initDatabase(db);
-    //     });
-    //   }, []);
+    
     useEffect(() => {
       const initializeApp = async () => {
         try {
