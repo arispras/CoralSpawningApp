@@ -1,2 +1,2 @@
 # CoralSpawningApp
-CoralSpawningApp Mobile React Native
+CoralSpawningApp Mobile with React Native
