@@ -5,10 +5,19 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
-import { Card, Button, IconButton, Searchbar } from "react-native-paper";
+import {
+  Card,
+  Button,
+  IconButton,
+  Searchbar,
+  Modal,
+  Portal,
+} from "react-native-paper";
 import { getObservations, Observation, MonitorType } from "../database/db";
 import { useNavigation } from "@react-navigation/native";
+import OSMMap from "./OSMMap";
 
 const ObservationsListScreen: React.FC = () => {
   const [observations, setObservations] = useState<Observation[]>([]);
@@ -18,7 +27,11 @@ const ObservationsListScreen: React.FC = () => {
   const [filteredObservations, setFilteredObservations] = useState<
     Observation[]
   >([]);
-
+  const [selectedLocation, setSelectedLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [mapVisible, setMapVisible] = useState(false);
   const loadObservations = async () => {
     setIsLoading(true);
     try {
@@ -60,6 +73,11 @@ const ObservationsListScreen: React.FC = () => {
   useEffect(() => {
     filterObservations(searchQuery);
   }, [searchQuery, observations]);
+
+  const showLocationOnMap = (latitude: number, longitude: number) => {
+    setSelectedLocation({ latitude, longitude });
+    setMapVisible(true);
+  };
   const renderItem = ({ item }: { item: Observation }) => (
     <TouchableOpacity
       onPress={() =>
@@ -70,8 +88,18 @@ const ObservationsListScreen: React.FC = () => {
         <Card.Title
           title={item.reefName}
           subtitle={`${item.location} - ${item.monitorBy}`}
-       
+          right={() => (
+            <IconButton
+              icon="map"
+              onPress={(e) => {
+                e.stopPropagation();
+                showLocationOnMap(item.latitude, item.longitude);
+              }}
+              style={styles.mapButton}
+            />
+          )}
         />
+
         <Card.Content>
           <Text>
             Lat: {item.latitude}, Long: {item.longitude}
@@ -116,10 +144,33 @@ const ObservationsListScreen: React.FC = () => {
         mode="contained"
         onPress={() => navigation.navigate("ObservationForm")}
         style={styles.addButton}
-         labelStyle={styles.addButtonLabel}
+        labelStyle={styles.addButtonLabel}
       >
         Add Observation
       </Button>
+      <Portal>
+        <Modal
+          visible={mapVisible}
+          onDismiss={() => setMapVisible(false)}
+          contentContainerStyle={styles.modalContainer}
+        >
+          {selectedLocation && (
+            <View style={styles.mapContainer}>
+              <OSMMap
+                latitude={selectedLocation.latitude}
+                longitude={selectedLocation.longitude}
+              />
+              <Button
+                mode="contained"
+                onPress={() => setMapVisible(false)}
+                style={styles.closeMapButton}
+              >
+                Tutup Peta
+              </Button>
+            </View>
+          )}
+        </Modal>
+      </Portal>
     </View>
   );
 };
@@ -138,16 +189,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#666",
   },
-   addButton: {
-        margin: 16,
-        borderRadius: 8,
-        paddingVertical: 8,
-        backgroundColor: '#6200ee',
-    },
-    addButtonLabel: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
+  addButton: {
+    margin: 16,
+    borderRadius: 8,
+    paddingVertical: 8,
+    backgroundColor: "#6200ee",
+  },
+  addButtonLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
   searchBar: {
     marginBottom: 16,
     borderRadius: 8,
@@ -156,6 +207,32 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     fontSize: 14,
+  },
+  mapContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  
+  modalContainer: {
+    backgroundColor: "white",
+    padding: 0,
+    margin: 20,
+    borderRadius: 10,
+    height: Dimensions.get("window").height * 0.8,
+    width: Dimensions.get("window").width - 40,
+    overflow: "hidden",
+  },
+  closeMapButton: {
+    position: "absolute",
+    bottom: 20,
+    alignSelf: "center",
+    borderRadius: 8,
+    paddingVertical: 8,
+    backgroundColor: "#6200ee",
+  },
+  mapButton: {
+    marginRight: 8,
   },
 });
 
