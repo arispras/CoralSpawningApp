@@ -110,7 +110,7 @@ const ObservationFormScreen: React.FC<ObservationFormProps> = ({
 
       // Save photos
       for (const photo of photos) {
-        console.log("photo:" + photo);
+        // console.log("photo:" + photo);
         await addPhoto({
           ...photo,
           observationId,

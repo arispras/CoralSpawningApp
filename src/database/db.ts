@@ -169,27 +169,27 @@ export const addObservation = async (
             spawnTime, colonyCount, maxDepth, userId
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
-      observation.email,
-      observation.location,
-      observation.reefName,
-      observation.latitude,
-      observation.longitude,
-      observation.monitorBy,
-      observation.genus,
-      observation.species,
-      observation.confident,
-      observation.colonyDepth,
-      observation.comment,
+      observation.email ?? null,
+      observation.location?? null,
+      observation.reefName?? null,
+      observation.latitude?? null,
+      observation.longitude?? null,
+      observation.monitorBy?? null,
+      observation.genus?? null,
+      observation.species?? null,
+      observation.confident?? null,
+      observation.colonyDepth?? null,
+      observation.comment?? null,
       observation.iswitness ? 1 : 0,
-      observation.spawningDate,
-      observation.deployedDate,
-      observation.recoverDate,
-      observation.diveDate,
-      observation.diveStartTime,
-      observation.spawnTime,
-      observation.colonyCount,
-      observation.maxDepth,
-      observation.userId,
+      observation.spawningDate?? null,
+      observation.deployedDate?? null,
+      observation.recoverDate?? null,
+      observation.diveDate?? null,
+      observation.diveStartTime?? null,
+      observation.spawnTime?? null,
+      observation.colonyCount?? null,
+      observation.maxDepth?? null,
+      observation.userId?? null,
     ]
   );
   return result.lastInsertRowId as number;
@@ -303,7 +303,7 @@ export const updatePhoto = async (
 // Fungsi untuk menutup database (opsional)
 export const closeDatabase = async (): Promise<void> => {
   if (databaseInstance) {
-    await db.closeAsync();
+    await databaseInstance.closeAsync();
     databaseInstance = null;
   }
 };
