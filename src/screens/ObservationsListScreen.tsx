@@ -18,11 +18,18 @@ import {
 import { getObservations, Observation, MonitorType } from "../database/db";
 import { useNavigation } from "@react-navigation/native";
 import OSMMap from "./OSMMap";
+import { StackNavigationProp } from "@react-navigation/stack";
+
+type RootStackParamList = {
+  "ObservationForm": undefined; // jika tidak ada params
+  "ObservationDetail": { observationId:number|undefined };
+};
 
 const ObservationsListScreen: React.FC = () => {
   const [observations, setObservations] = useState<Observation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredObservations, setFilteredObservations] = useState<
     Observation[]
@@ -165,7 +172,7 @@ const ObservationsListScreen: React.FC = () => {
                 onPress={() => setMapVisible(false)}
                 style={styles.closeMapButton}
               >
-                Tutup Peta
+                Close Map
               </Button>
             </View>
           )}
@@ -213,7 +220,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  
+
   modalContainer: {
     backgroundColor: "white",
     padding: 0,
