@@ -1,12 +1,15 @@
-import React, { useContext, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import ObservationModel from '../models/Observation';
-import NetInfo from '@react-native-community/netinfo';
-import { useInterval } from '../hooks/useInterval';
+import React, { useContext, useEffect } from "react";
+import { getUser } from "../contexts/Auth";
+import ObservationModel from "../models/Observation";
+import NetInfo from "@react-native-community/netinfo";
+import { useInterval } from "../hooks/useInterval";
+import { User } from "../types";
 
 const SyncService: React.FC = () => {
-  const { user } = useAuth();
-
+  var user:User | null;
+  const checkUser  = async () => {
+     user= await getUser();
+  };
   useInterval(() => {
     if (user) {
       ObservationModel.syncWithBackend();
@@ -14,14 +17,15 @@ const SyncService: React.FC = () => {
   }, 30000); // Sync every 30 seconds
 
   useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
+    checkUser();
+    const unsubscribe = NetInfo.addEventListener((state) => {
       if (state.isConnected && user) {
         ObservationModel.syncWithBackend();
       }
     });
 
     return () => unsubscribe();
-  }, [user]);
+  });
 
   return null;
 };

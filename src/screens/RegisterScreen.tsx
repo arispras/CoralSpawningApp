@@ -2,7 +2,8 @@
 import React, { useState, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, TextInput, Text, HelperText } from 'react-native-paper';
-import { useAuth } from '../contexts/AuthContext';
+// import { useAuth } from '../contexts/AuthContext';
+import {register} from '../contexts/Auth';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 
@@ -21,7 +22,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> =  ({ navigation }) => {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { register } = useAuth();
+  // const { register } = useAuth();
 
   const handleRegister = async () => {
     if (!name || !email || !password || !passwordConfirmation) {

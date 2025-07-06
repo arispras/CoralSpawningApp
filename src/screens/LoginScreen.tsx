@@ -2,7 +2,8 @@
 import React, { useState, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, TextInput, Text, HelperText } from 'react-native-paper';
-import { useAuth } from '../contexts/AuthContext';
+// import { useAuth } from '../contexts/AuthContext';
+import {login} from '../contexts/Auth';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 
@@ -20,7 +21,7 @@ const LoginScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  // const { login } = useAuth();
 
   const handleLogin = async () => {
     // MATIKAN DULU VALIDASINYA //

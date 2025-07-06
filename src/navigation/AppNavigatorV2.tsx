@@ -10,6 +10,7 @@ import {
 } from "@react-navigation/bottom-tabs";
 import { ActivityIndicator, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import ObservationFormScreen from "../screens/ObservationFormScreen";
 import ObservationsListScreen from "../screens/ObservationsListScreen";
 import ObservationDetailScreen from "../screens/ObservationDetailScreen";
@@ -17,8 +18,7 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import SyncService from "../services/SyncService";
-import { login, logout, isLogin } from "../contexts/Auth";
-
+import { Observation } from "../types";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -74,19 +74,7 @@ const ProfileStack = () => {
   );
 };
 
-const AppStack: React.FC = () => {
-  const [is_login, setIsLogin] = useState(false);
-
-  useEffect(() => {
-    init();
-  });
-
-  const init = async () => {
-    const is_log = await isLogin();
-    console.log(is_log);
-    setIsLogin(is_log);
-  };
-
+const AppStack = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -103,11 +91,7 @@ const AppStack: React.FC = () => {
       })}
     >
       <Tab.Screen name="Observations" component={ObservationsStack} />
-      {is_login ? (
-        <Tab.Screen name="Profile" component={ProfileStack} />
-      ) : (
-        <Tab.Screen name="Auth" component={AuthStack} />
-      )}
+      <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
 };
@@ -125,8 +109,11 @@ const AuthStack = () => {
 };
 
 const RootNavigator = () => {
+    const { user, isAppReady } = useAuth();
 
-  const isAppReady = true;
+  // SETTING TRUE //
+  // const isAppReady = true;
+  // const user = { username: "admin" };
 
   if (!isAppReady) {
     return (
@@ -138,7 +125,7 @@ const RootNavigator = () => {
 
   return (
     <NavigationContainer>
-      <AppStack />
+      {user ? <AppStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };
@@ -146,13 +133,12 @@ const RootNavigator = () => {
 const AppNav = () => {
   return (
     <>
-     
+      <AuthProvider>
         <RootNavigator />
-        {/* <SyncService /> */}
-        
+        <SyncService />
+      </AuthProvider>
     </>
   );
 };
-
 
 export default AppNav;
