@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   createStackNavigator,
@@ -18,6 +18,7 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import SyncService from "../services/SyncService";
+import { login, logout, isLogin } from "../contexts/Auth";
 import { Observation } from "../types";
 
 export type RootStackParamList = {
@@ -28,6 +29,7 @@ export type RootStackParamList = {
   ObservationDetail: { observationId: number };
   ObservationForm: undefined;
   Profile: undefined;
+  Auth: undefined;
 };
 
 export type AuthStackNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -42,7 +44,6 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 
 const ObservationsStack = () => {
   return (
- 
     <Stack.Navigator initialRouteName="ObservationsList">
       <Stack.Screen
         name="ObservationsList"
@@ -64,19 +65,29 @@ const ObservationsStack = () => {
 };
 const ProfileStack = () => {
   return (
- 
     <Stack.Navigator initialRouteName="Profile">
       <Stack.Screen
         name="Profile"
         component={ProfileScreen}
         options={{ title: "Profile" }}
       />
-      
     </Stack.Navigator>
   );
 };
 
-const AppStack = () => {
+const AppStack: React.FC = () => {
+  const [is_login, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    init();
+  });
+
+  const init = async () => {
+    const is_log = await isLogin();
+    console.log(is_log);
+    setIsLogin(is_log);
+  };
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -89,31 +100,59 @@ const AppStack = () => {
 
           return <MaterialIcons name={iconName} size={size} color={color} />;
         },
-        headerShown:false
+        headerShown: false,
       })}
     >
       <Tab.Screen name="Observations" component={ObservationsStack} />
-      <Tab.Screen name="Profile" component={ProfileStack}  />
+      {is_login ? (
+        <Tab.Screen name="Profile" component={ProfileStack} />
+      ) : (
+        <Tab.Screen name="Auth" component={AuthStack} />
+      )}
     </Tab.Navigator>
   );
 };
 
 const AuthStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="Login"
+    >
       <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen}  />
+      <Stack.Screen name="Register" component={RegisterScreen} />
     </Stack.Navigator>
   );
 };
 
+// const RootNavigator = () => {
+// //   const { user, isAppReady } = useAuth();
+
+// // SETTING TRUE //
+//  const isAppReady=true;
+//  const user={"username":"admin"};
+
+//   if (!isAppReady) {
+//     return (
+//       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+//         <ActivityIndicator size="large" />
+//       </View>
+//     );
+//   }
+
+//   return (
+//     <NavigationContainer>
+//       {user ? <AppStack /> : <AuthStack />}
+//     </NavigationContainer>
+//   );
+// };
+
 const RootNavigator = () => {
-//   const { user, isAppReady } = useAuth();
+  //   const { user, isAppReady } = useAuth();
 
-// SETTING TRUE //
- const isAppReady=true;
- const user={"username":"admin"};
-
+  // SETTING TRUE //
+  const isAppReady = true;
+  const user = { username: "admin" };
 
   if (!isAppReady) {
     return (
@@ -125,11 +164,10 @@ const RootNavigator = () => {
 
   return (
     <NavigationContainer>
-      {user ? <AppStack /> : <AuthStack />}
+      <AppStack />
     </NavigationContainer>
   );
 };
-
 const AppNav = () => {
   return (
     <>
