@@ -7,6 +7,7 @@ import ObservationFormScreen from "./src/screens/ObservationFormScreen";
 import ObservationsListScreen from "./src/screens/ObservationsListScreen";
 import ObservationDetailScreen from "./src/screens/ObservationDetailScreen";
 import { View, Text } from "react-native";
+import AppNav from "./src/navigation/AppNavigator";
 
 const AppWrapper = () => {
   const [dbReady, setDbReady] = useState(false);
@@ -54,7 +55,7 @@ const AppWrapper = () => {
   };
   return (
     <PaperProvider>
-      <NavigationContainer>
+      {/* <NavigationContainer>
         <Stack.Navigator initialRouteName="ObservationsList">
           <Stack.Screen
             name="ObservationsList"
@@ -72,7 +73,8 @@ const AppWrapper = () => {
             options={{ title: "Observation Detail" }}
           />
         </Stack.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> */}
+      <AppNav/>
     </PaperProvider>
   );
 };
