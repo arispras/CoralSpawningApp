@@ -1,15 +1,17 @@
 // src/screens/LoginScreen.js
-import React, { useState, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Button, TextInput, Text, HelperText } from 'react-native-paper';
+import React, { useState, useContext } from "react";
+import { View, StyleSheet, Alert } from "react-native";
+import { Button, TextInput, Text, HelperText } from "react-native-paper";
 // import { useAuth } from '../contexts/AuthContext';
-import {login} from '../contexts/Auth';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../navigation/AppNavigator';
+import { login } from "../contexts/Auth";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigation/AppNavigator";
+import ProfileScreen from "./ProfileScreen";
 
 type RegisterScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'Register'
+  "Register",
+  "Profile"
 >;
 
 interface RegisterScreenProps {
@@ -17,28 +19,34 @@ interface RegisterScreenProps {
 }
 
 const LoginScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   // const { login } = useAuth();
 
   const handleLogin = async () => {
     // MATIKAN DULU VALIDASINYA //
 
-    // if (!email || !password) {
-    //   setError('Please fill in all fields');
-    //   return;
-    // }
+    if (!email || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
 
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
       // return true;
-     await login(email, password);
+      let res = await login(email, password);
+      if (res) {
+          Alert.alert("Success", "Login successfully");
+        navigation.navigate("Setting");
+      }else{
+        Alert.alert("Fail", "Check your User or Password");
+      }
     } catch (error) {
-      setError('Invalid email or password');
+      setError("Invalid email or password");
     } finally {
       setIsLoading(false);
     }
@@ -46,8 +54,8 @@ const LoginScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Reef Monitoring</Text>
-      
+      <Text style={styles.title}>Login</Text>
+
       <TextInput
         label="Email"
         value={email}
@@ -67,9 +75,9 @@ const LoginScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 
       {error ? <HelperText type="error">{error}</HelperText> : null}
 
-      <Button 
-        mode="contained" 
-        onPress={handleLogin} 
+      <Button
+        mode="contained"
+        onPress={handleLogin}
         loading={isLoading}
         disabled={isLoading}
         style={styles.button}
@@ -77,8 +85,8 @@ const LoginScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
         Login
       </Button>
 
-      <Button 
-        onPress={() => navigation.navigate('Register')}
+      <Button
+        onPress={() => navigation.navigate("Register")}
         style={styles.button}
       >
         Don't have an account? Register
@@ -90,13 +98,13 @@ const LoginScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     padding: 16,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 32,
   },
   input: {

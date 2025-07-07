@@ -5,11 +5,10 @@ import { User, AuthContextType } from "../types";
 
 export const isLogin = async (): Promise<boolean> => {
   try {
-    // await initializeDatabase();
     const token = await AsyncStorage.getItem("authToken");
     if (token) {
-      const userData = await ApiService.getUser();
-      return true;
+      // const userData = await ApiService.getUser();
+      return false;
     } else {
       return false;
     }
@@ -20,20 +19,16 @@ export const isLogin = async (): Promise<boolean> => {
     //  return true;
   }
 };
-export const getUser = async (): Promise<User| null> => {
+export const getUser = async (): Promise<object> => {
   try {
-    const token = await AsyncStorage.getItem("authToken");
-    if (token) {
-      const userData = (await ApiService.getUser()).data;
-      return userData;
-    } else {
-      return null;
-    }
+    const usr = await AsyncStorage.getItem("userData");
+    const userData=JSON.parse(usr!);
+    return userData;
   } catch (error) {
     console.error("Error during bootstrap", error);
-    return null;
+    return {};
   } finally {
-    //  return true;
+ 
   }
 };
 
@@ -42,9 +37,20 @@ export const login = async (
   password: string
 ): Promise<boolean> => {
   try {
-    const response = await ApiService.login({ email, password });
-    await AsyncStorage.setItem("authToken", response.data.token);
-    return true;
+    const response: any = await ApiService.login({ email, password });
+    let result = response["data"];
+    let data = result["data"];
+    let status = result["status"];
+    console.log(data);
+    console.log(status);
+    // await AsyncStorage.setItem("authToken", response.data.token);
+    if (status == "OK") {
+      await AsyncStorage.setItem("userData", JSON.stringify(data));
+      return true;
+    } else {
+      await AsyncStorage.removeItem("userData");
+      return false;
+    }
   } catch (error) {
     console.error("Login error:", error);
     throw error;
@@ -75,9 +81,11 @@ export const register = async (
 
 export const logout = async (): Promise<void> => {
   try {
-    await ApiService.logout();
-    await AsyncStorage.removeItem("authToken");
+    // await ApiService.logout();
+    // await AsyncStorage.removeItem("authToken");
+    await AsyncStorage.removeItem("userData");
     // setUser(null);
+   
   } catch (error) {
     console.error("Logout error:", error);
   }

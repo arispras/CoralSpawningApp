@@ -9,7 +9,7 @@ import {
   BottomTabNavigationProp,
 } from "@react-navigation/bottom-tabs";
 import { ActivityIndicator, View } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import ObservationFormScreen from "../screens/ObservationFormScreen";
 import ObservationsListScreen from "../screens/ObservationsListScreen";
 import ObservationDetailScreen from "../screens/ObservationDetailScreen";
@@ -18,7 +18,8 @@ import RegisterScreen from "../screens/RegisterScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import SyncService from "../services/SyncService";
 import { login, logout, isLogin } from "../contexts/Auth";
-
+import SettingScreen from "../screens/SettingScreen";
+import { HeaderBackButton } from "react-navigation";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -28,6 +29,7 @@ export type RootStackParamList = {
   ObservationDetail: { observationId: number };
   ObservationForm: undefined;
   Profile: undefined;
+  Setting: undefined;
   Auth: undefined;
 };
 
@@ -47,7 +49,7 @@ const ObservationsStack = () => {
       <Stack.Screen
         name="ObservationsList"
         component={ObservationsListScreen}
-        options={{ title: "Observations List" }}
+        options={{ title: "Observations List" ,  headerShown: false  }}
       />
       <Stack.Screen
         name="ObservationForm"
@@ -89,43 +91,56 @@ const AppStack: React.FC = () => {
 
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          let iconName: "list" | "person" = "list";
-
-          if (route.name === "Profile") {
-            iconName = "person";
-          }
-
-          return <MaterialIcons name={iconName} size={size} color={color} />;
-        },
-        headerShown: false,
-      })}
+    //   screenOptions={({ route }) => ({
+    //      tabBarIcon: ({color, size}) => (
+    //                     <Ionicons name="person" size={size} color={color}/>
+    //                 ),
+    //     headerShown: false,
+    //   })}
     >
-      <Tab.Screen name="Observations" component={ObservationsStack} />
-      {is_login ? (
+      <Tab.Screen
+        name="Observations"
+        component={ObservationsStack}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="list" size={size} color={color} />
+          ),
+          title: "Observations",
+        }}
+      />
+      {/* {is_login ? (
         <Tab.Screen name="Profile" component={ProfileStack} />
-      ) : (
-        <Tab.Screen name="Auth" component={AuthStack} />
-      )}
+      ) : ( */}
+      <Tab.Screen
+        name="Auth"
+        component={AuthStack}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings" size={size} color={color} />
+          ),
+          title: "Setting",
+        }}
+      />
+      {/* )} */}
     </Tab.Navigator>
   );
 };
 
 const AuthStack = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="Login"
+    <Stack.Navigator  
+      screenOptions={{ headerShown: true  }}
+      initialRouteName="Setting"
     >
-      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Setting" component={SettingScreen}   options={{ headerShown: false  }}/>
+      <Stack.Screen name="Login" component={LoginScreen}  />
       <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen}   />
     </Stack.Navigator>
   );
 };
 
 const RootNavigator = () => {
-
   const isAppReady = true;
 
   if (!isAppReady) {
@@ -146,13 +161,10 @@ const RootNavigator = () => {
 const AppNav = () => {
   return (
     <>
-     
-        <RootNavigator />
-        {/* <SyncService /> */}
-        
+      <RootNavigator />
+      {/* <SyncService /> */}
     </>
   );
 };
-
 
 export default AppNav;

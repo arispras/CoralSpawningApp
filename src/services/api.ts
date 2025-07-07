@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Observation, Photo, User } from '../types';
 
-const API_BASE_URL = 'http://your-laravel-backend-url/api';
+const API_BASE_URL = 'http://145.79.11.118/kichen_api/api/';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -36,8 +36,10 @@ const ApiService = {
     password_confirmation: string;
   }): Promise<AxiosResponse<{ user: User; token: string }>> => api.post('/register', data),
 
-  login: (data: { email: string; password: string }): Promise<AxiosResponse<{ user: User; token: string }>> => 
-    api.post('/login', data),
+//   login: (data: { email: string; password: string }): Promise<AxiosResponse<{ user: User; token: string }>> => 
+//     api.post('/auth/login', data),
+  login: (data: { email: string; password: string }): Promise<object> => 
+    api.post('/auth/login', {"username":data.email,"password":data.password}),
 
   logout: (): Promise<AxiosResponse<void>> => api.post('/logout'),
 

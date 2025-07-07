@@ -37,8 +37,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
       const response = await ApiService.login({ email, password });
-      await AsyncStorage.setItem("authToken", response.data.token);
-      setUser(response.data.user);
+    //   await AsyncStorage.setItem("authToken", response.data.token);
+    //   setUser(response.data.user);
       return true;
     } catch (error) {
       console.error("Login error:", error);

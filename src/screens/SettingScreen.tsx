@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 // import { useAuth } from '../contexts/AuthContext';
@@ -9,10 +9,13 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 type RootStackParamList = {
-  Setting: undefined; // jika tidak ada params
+  Profile: undefined; // jika tidak ada params
+  Login: undefined; // jika tidak ada params
+  Language: { observationId: number | undefined };
 };
 
-const ProfileScreen = () => {
+const SettingScreen = () => {
+  // const { user, logout } =useAuth();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [userData, setUserData] = useState("");
   const [isLogin, setIsLogin] = useState(false);
@@ -35,29 +38,49 @@ const ProfileScreen = () => {
     console.log("islogin", isLogin);
     // console.log("userData", userData);
   };
+
   return (
     <View style={styles.container}>
+      {/* <Text style={styles.title}>Info</Text> */}
+
+      {/* <Text>Email: arispras@gmail.com</Text>
+      <Text>Name: Aris</Text> */}
       {isLogin ? (
         <>
           <Text>Email: {userDataObj!["email"]}</Text>
           <Text>Name: {userDataObj!["user_full_name"]}</Text>
-          
-
-          <Button
-            mode="contained"
+          <ProfileSectionButton
             onPress={function (): void {
-              logout();
-              Alert.alert("Success", "Logout successfully");
-              navigation.navigate("Setting");
+              navigation.navigate("Profile");
             }}
-            style={styles.button}
-          >
-            Logout
-          </Button>
+            title={"Profile"}
+          />
+
+          <ProfileSectionButton
+            onPress={function (): void {
+              //   throw new Error("Function not implemented.");
+            }}
+            title={"Syncronize"}
+          />
         </>
       ) : (
-        <Text>Please Login ..</Text>
+        <>
+          
+          <Text>Please Login..</Text>
+          <ProfileSectionButton
+            onPress={function (): void {
+              navigation.navigate("Login");
+            }}
+            title={"Login"}
+          />
+        </>
       )}
+      <ProfileSectionButton
+        onPress={function (): void {
+          //   throw new Error("Function not implemented.");
+        }}
+        title={"Languages"}
+      />
     </View>
   );
 };
@@ -77,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+export default SettingScreen;
