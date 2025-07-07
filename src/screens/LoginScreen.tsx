@@ -1,12 +1,10 @@
-// src/screens/LoginScreen.js
 import React, { useState, useContext } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { Button, TextInput, Text, HelperText } from "react-native-paper";
-// import { useAuth } from '../contexts/AuthContext';
 import { login } from "../contexts/Auth";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../navigation/AppNavigator";
-import ProfileScreen from "./ProfileScreen";
+import { showMessage } from "react-native-flash-message";
 
 type RegisterScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -40,10 +38,18 @@ const LoginScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
       // return true;
       let res = await login(email, password);
       if (res) {
-          Alert.alert("Success", "Login successfully");
+        // Alert.alert("Success", "Login successfully");
+        showMessage({
+          type: "success",
+          message: "Login successfully",
+        });
         navigation.navigate("Setting");
-      }else{
-        Alert.alert("Fail", "Check your User or Password");
+      } else {
+        // Alert.alert("Fail", "Check your User or Password");
+        showMessage({
+          type: "danger",
+          message: "Check your User or Password",
+        });
       }
     } catch (error) {
       setError("Invalid email or password");

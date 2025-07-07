@@ -1,10 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { Button, Text } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
-// import { useAuth } from '../contexts/AuthContext';
 import { logout } from "../contexts/Auth";
-import ProfileSectionButton from "../components/buttons/SettingSectionButton";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";

@@ -17,10 +17,10 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import SyncService from "../services/SyncService";
-import { login, logout, isLogin } from "../contexts/Auth";
-import SettingScreen from "../screens/SettingScreen";
-import { HeaderBackButton } from "react-navigation";
 
+import SettingScreen from "../screens/SettingScreen";
+import FlashMessage from "react-native-flash-message";
+import { useTranslation } from "react-i18next";
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
@@ -77,6 +77,7 @@ const ProfileStack = () => {
 };
 
 const AppStack: React.FC = () => {
+    const { t } = useTranslation();  
   const [is_login, setIsLogin] = useState(false);
 
   useEffect(() => {
@@ -84,9 +85,7 @@ const AppStack: React.FC = () => {
   });
 
   const init = async () => {
-    const is_log = await isLogin();
-    console.log(is_log);
-    setIsLogin(is_log);
+
   };
 
   return (
@@ -105,12 +104,9 @@ const AppStack: React.FC = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="list" size={size} color={color} />
           ),
-          title: "Observations",
+          title: t("observations"),
         }}
       />
-      {/* {is_login ? (
-        <Tab.Screen name="Profile" component={ProfileStack} />
-      ) : ( */}
       <Tab.Screen
         name="Auth"
         component={AuthStack}
@@ -118,10 +114,9 @@ const AppStack: React.FC = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="settings" size={size} color={color} />
           ),
-          title: "Setting",
+          title: t("setting"),
         }}
       />
-      {/* )} */}
     </Tab.Navigator>
   );
 };
@@ -153,6 +148,7 @@ const RootNavigator = () => {
 
   return (
     <NavigationContainer>
+          <FlashMessage position={"bottom"} />
       <AppStack />
     </NavigationContainer>
   );

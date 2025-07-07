@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Text } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
-// import { useAuth } from '../contexts/AuthContext';
 import { logout } from "../contexts/Auth";
 import ProfileSectionButton from "../components/buttons/SettingSectionButton";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LanguageBottomSheet from "../components/language/LanguageBottomSheet";
+import { SheetManager } from "react-native-actions-sheet";
+import { useTranslation } from "react-i18next";
+
 type RootStackParamList = {
   Profile: undefined; // jika tidak ada params
   Login: undefined; // jika tidak ada params
@@ -15,7 +17,7 @@ type RootStackParamList = {
 };
 
 const SettingScreen = () => {
-  // const { user, logout } =useAuth();
+  const { t } = useTranslation();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [userData, setUserData] = useState("");
   const [isLogin, setIsLogin] = useState(false);
@@ -53,14 +55,14 @@ const SettingScreen = () => {
             onPress={function (): void {
               navigation.navigate("Profile");
             }}
-            title={"Profile"}
+            title={t("profile")}
           />
 
           <ProfileSectionButton
             onPress={function (): void {
               //   throw new Error("Function not implemented.");
             }}
-            title={"Syncronize"}
+            title={t("synchronize")}
           />
         </>
       ) : (
@@ -76,11 +78,10 @@ const SettingScreen = () => {
         </>
       )}
       <ProfileSectionButton
-        onPress={function (): void {
-          //   throw new Error("Function not implemented.");
-        }}
-        title={"Languages"}
+        onPress={() => SheetManager.show("LANG_SHEET")}
+        title={t("languages")}
       />
+        <LanguageBottomSheet />
     </View>
   );
 };

@@ -31,7 +31,7 @@ import {
   deletePhoto,
 } from "../database/db";
 import { takePhoto } from "../services/cameraService";
-
+import { useTranslation } from "react-i18next";
 const ObservationDetailScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
@@ -46,7 +46,7 @@ const ObservationDetailScreen = () => {
   const [photoModalVisible, setPhotoModalVisible] = useState(false);
   const [currentPhoto, setCurrentPhoto] = useState<Photo | null>(null);
   const [newPhotoDescription, setNewPhotoDescription] = useState("");
-
+    const { t } = useTranslation();
   useEffect(() => {
     loadData();
   }, [observationId]);
@@ -203,7 +203,7 @@ const ObservationDetailScreen = () => {
           />
 
           <TextInput
-            label="Location"
+            label={`${t("location")}*`}
             value={tempObservation.location || ""}
             onChangeText={(text) =>
               setTempObservation((prev) => ({ ...prev, location: text }))
@@ -212,7 +212,7 @@ const ObservationDetailScreen = () => {
           />
 
           <TextInput
-            label="Reef Name"
+            label={`${t("reef_name")}*`}
             value={tempObservation.reefName || ""}
             onChangeText={(text) =>
               setTempObservation((prev) => ({ ...prev, reefName: text }))
@@ -267,7 +267,7 @@ const ObservationDetailScreen = () => {
 
           <Text style={styles.sectionTitle}>Species Information</Text>
           <TextInput
-            label="Genus"
+            label={`${t("genus")}*`}
             value={tempObservation.genus || ""}
             onChangeText={(text) =>
               setTempObservation((prev) => ({ ...prev, genus: text }))
@@ -275,7 +275,7 @@ const ObservationDetailScreen = () => {
             style={styles.input}
           />
           <TextInput
-            label="Species"
+            label={`${t("species")}*`}
             value={tempObservation.species || ""}
             onChangeText={(text) =>
               setTempObservation((prev) => ({ ...prev, species: text }))
@@ -313,17 +313,17 @@ const ObservationDetailScreen = () => {
         <Card style={styles.card}>
           <Card.Content>
             <Text style={styles.label}>Email: {observation.email}</Text>
-            <Text style={styles.label}>Location: {observation.location}</Text>
-            <Text style={styles.label}>Reef Name: {observation.reefName}</Text>
+            <Text style={styles.label}>{`${t("location")}*`}: {observation.location}</Text>
+            <Text style={styles.label}>{`${t("reef_name")}*`}: {observation.reefName}</Text>
             <Text style={styles.label}>
-              Coordinates: {observation.latitude}, {observation.longitude}
+              {`${t("coordinate")}*`}: {observation.latitude}, {observation.longitude}
             </Text>
             <Text style={styles.label}>
               Monitoring Method: {observation.monitorBy}
             </Text>
             {observation.genus && (
               <Text style={styles.label}>
-                Species: {observation.genus} {observation.species}
+                {`${t("species")}*`}: {observation.genus} {observation.species}
               </Text>
             )}
             {observation.comment && (

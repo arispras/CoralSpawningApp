@@ -19,6 +19,7 @@ import { getObservations, Observation, MonitorType } from "../database/db";
 import { useNavigation } from "@react-navigation/native";
 import OSMMap from "./OSMMap";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useTranslation } from "react-i18next";
 
 type RootStackParamList = {
   "ObservationForm": undefined; // jika tidak ada params
@@ -28,7 +29,7 @@ type RootStackParamList = {
 const ObservationsListScreen: React.FC = () => {
   const [observations, setObservations] = useState<Observation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const navigation = useNavigation();
+    const { t } = useTranslation();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredObservations, setFilteredObservations] = useState<
@@ -93,8 +94,8 @@ const ObservationsListScreen: React.FC = () => {
     >
       <Card style={styles.card}>
         <Card.Title
-          title={item.reefName}
-          subtitle={`${item.location} - ${item.monitorBy}`}
+          title={`${t("reef_name")}:${item.reefName}`}
+          subtitle={`${t("location")}:${item.location} - ${t("monitoring_method")}:${item.monitorBy}`}
           right={() => (
             <IconButton
               icon="map"
@@ -109,11 +110,12 @@ const ObservationsListScreen: React.FC = () => {
 
         <Card.Content>
           <Text>
-            Lat: {item.latitude}, Long: {item.longitude}
+            {/* Lat: {item.latitude}, Long: {item.longitude} */}
+             {t("species")} : {item.species} 
           </Text>
           {item.genus && (
             <Text>
-              Species: {item.genus} {item.species}
+             {t("genus")}:{item.genus} 
             </Text>
           )}
         </Card.Content>

@@ -25,7 +25,7 @@ import {
   MonitorType,
 } from "../database/db";
 import { Observation, Photo } from "../database/db";
-import { blue } from "react-native-reanimated/lib/typescript/Colors";
+import { useTranslation } from "react-i18next";
 
 interface ObservationFormProps {
   userId?: number;
@@ -44,7 +44,7 @@ const ObservationFormScreen: React.FC<ObservationFormProps> = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [newPhotoDescription, setNewPhotoDescription] = useState("");
-
+    const { t } = useTranslation();
   useEffect(() => {
     // Get current location when component mounts
     const fetchLocation = async () => {
@@ -161,7 +161,7 @@ const ObservationFormScreen: React.FC<ObservationFormProps> = ({
       />
 
       <TextInput
-        label="Location*"
+        label={`${t("location")}*`}
         value={observation.location || ""}
         onChangeText={(text) => handleInputChange("location", text)}
         style={styles.input}
@@ -172,7 +172,7 @@ const ObservationFormScreen: React.FC<ObservationFormProps> = ({
       </HelperText>
 
       <TextInput
-        label="Reef Name*"
+        label={`${t("reef_name")}*`}
         value={observation.reefName || ""}
         onChangeText={(text) => handleInputChange("reefName", text)}
         style={styles.input}
@@ -224,13 +224,13 @@ const ObservationFormScreen: React.FC<ObservationFormProps> = ({
 
       <Text style={styles.sectionTitle}>Species Information</Text>
       <TextInput
-        label="Genus"
+        label={`${t("genus")}*`}
         value={observation.genus || ""}
         onChangeText={(text) => handleInputChange("genus", text)}
         style={styles.input}
       />
       <TextInput
-        label="Species"
+        label={`${t("species")}*`}
         value={observation.species || ""}
         onChangeText={(text) => handleInputChange("species", text)}
         style={styles.input}

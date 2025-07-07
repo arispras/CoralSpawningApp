@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { getDatabase, initDatabase } from "./src/database/db";
 import { Provider as PaperProvider } from "react-native-paper";
-import ObservationFormScreen from "./src/screens/ObservationFormScreen";
-import ObservationsListScreen from "./src/screens/ObservationsListScreen";
-import ObservationDetailScreen from "./src/screens/ObservationDetailScreen";
+
 import { View, Text } from "react-native";
 import AppNav from "./src/navigation/AppNavigator";
+import i18n from "./src/localization/i18n";
+import { I18nextProvider } from "react-i18next";
 
 const AppWrapper = () => {
   const [dbReady, setDbReady] = useState(false);
@@ -55,26 +54,9 @@ const AppWrapper = () => {
   };
   return (
     <PaperProvider>
-      {/* <NavigationContainer>
-        <Stack.Navigator initialRouteName="ObservationsList">
-          <Stack.Screen
-            name="ObservationsList"
-            component={ObservationsListScreen}
-            options={{ title: "Observations List" }}
-          />
-          <Stack.Screen
-            name="ObservationForm"
-            component={ObservationFormScreen}
-            options={{ title: "New Observation" }}
-          />
-          <Stack.Screen
-            name="ObservationDetail"
-            component={ObservationDetailScreen}
-            options={{ title: "Observation Detail" }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer> */}
+       <I18nextProvider i18n={i18n}>
       <AppNav/>
+      </I18nextProvider>
     </PaperProvider>
   );
 };
